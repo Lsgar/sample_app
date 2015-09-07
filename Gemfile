@@ -30,6 +30,8 @@ group :test do
   # Uncomment these lines on Windows.
   # gem 'rb-notifu', '0.0.4'
   # gem 'win32console', '1.3.2'
+
+  gem 'factory_girl_rails', '4.2.1'
 end
 
 gem 'sass-rails', '4.0.5'
