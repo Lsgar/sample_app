@@ -13,17 +13,25 @@ class UsersController < ApplicationController
   end
 
   def new
-    @user = User.new
+    unless signed_in?
+      @user = User.new
+    else
+      redirect_to root_url, notice: "新規登録する場合は、サインアウトしてください。"
+    end
   end
 
   def create
-    @user = User.new(user_params)
-    if @user.save
-      sign_in @user
-      flash[:success] = "Welcome to the Sample App!"
-      redirect_to @user
+    unless signed_in?
+      @user = User.new(user_params)
+      if @user.save
+        sign_in @user
+        flash[:success] = "Welcome to the Sample App!"
+        redirect_to @user
+      else
+        render 'new'
+      end
     else
-      render 'new'
+      redirect_to root_url, notice: "新規登録する場合は、サインアウトしてください。"
     end
   end
 
@@ -42,9 +50,14 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    User.find(params[:id]).destroy
-    flash[:success] = "User destroyed."
-    redirect_to users_url
+    @admin = User.find(params[:id])
+    if current_user?(@admin)
+      redirect_to root_path
+    else
+      User.find(params[:id]).destroy
+      flash[:success] = "User destroyed."
+      redirect_to users_url
+    end
   end
 
   private
