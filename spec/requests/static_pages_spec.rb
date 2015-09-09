@@ -31,6 +31,50 @@ describe "Static pages" do
           expect(page).to have_selector("li##{item.id}", text: item.content)
         end
       end
+
+      it { should have_content(user.microposts.count) }
+      it { should have_content("microposts") }
+
+      describe "display 'micropost' when one micropost" do
+        before { click_link "delete", match: :first }
+        it { should have_content("micropost") }
+        it { should_not have_content("microposts") }
+      end
+    end
+
+    describe "pagination" do
+      let(:user) { FactoryGirl.create(:user) }
+      before do
+         31.times { FactoryGirl.create(:micropost, user: user) }
+         sign_in user
+         visit root_path
+      end
+      after  { Micropost.delete_all }
+
+      it { should have_selector('div.pagination') }
+
+      it "should list each micropost" do
+        user.feed.paginate(page: 1).each do |micropost|
+          expect(page).to have_selector("li##{micropost.id}", text: micropost.content)
+        end
+      end
+    end
+
+    describe "delete links" do
+
+      it { should_not have_link('delete') }
+
+      describe "as a user" do
+        let(:user) { FactoryGirl.create(:user) }
+        let(:another_user) { FactoryGirl.create(:user) }
+        let(:micropost) { FactoryGirl.create(:micropost, user: another_user) }
+        before do
+          sign_in user
+          visit root_path
+        end
+
+        it { should_not have_link('delete', href: user_path(another_user)) }
+      end
     end
   end
 
