@@ -13,14 +13,17 @@ $ ->
  $('#micropost_content').keyup ->
    countChars($(this))
 
-# <%= javascript_tag do %>
-#   var LIMIT = 140;
-#   var p = document.getElementById('micropost_count');
-#
-#   function countChars() {
-#     remaining = LIMIT - document.getElementById('micropost_content').value.length;
-#     p.text = remaining;
-#   }
-#
-#   p.addEventListener('onkeyup', countChars, false);
-# <% end %>
+ # (function() {
+ #   var LIMIT = 140;
+ #   var counter = document.getElementById('micropost_count');
+ #   var content = document.getElementById('micropost_content');
+ #
+ #   counter.innerHTML="あと" + LIMIT + "文字";
+ #
+ #   function countChars() {
+ #     remaining = LIMIT - content.value.length;
+ #     counter.innerHTML = "あと" + remaining + "文字";
+ #   }
+ #
+ #   content.addEventListener('keyup', countChars, false);
+ # })();
