@@ -175,6 +175,24 @@ describe User do
           should include(micropost)
         end
       end
+
+      it "should destroy relationships when @user destroy" do
+        relationships = @user.relationships.to_a
+        @user.destroy
+        expect(relationships).not_to be_empty
+        relationships.each do |relationship|
+          expect(Relationship.where(id: relationship.id)).to be_empty
+        end
+      end
+
+      it "should destroy relationships when followed_user destroy" do
+        relationships = @user.relationships.to_a
+        followed_user.destroy
+        expect(relationships).not_to be_empty
+        relationships.each do |relationship|
+          expect(Relationship.where(id: relationship.id)).to be_empty
+        end
+      end
     end
   end
 
