@@ -7,6 +7,9 @@ describe "Authentication" do
   describe "signin page" do
     before { visit signin_path }
 
+    it { shoud have_link('Sign up now!',  href: signup_path) }
+    it { shoud have_link('forgotten password?',  href: new_password_reset_path) }
+
     describe "with invalid information" do
       let(:user) { FactoryGirl.create(:user) }
       before { click_button "Sign in" }
