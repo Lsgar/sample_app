@@ -23,4 +23,3 @@ doc/
 .DS_Store
 .idea
 .secret
-/config/environments/production.rb
