@@ -7,8 +7,8 @@ describe "Authentication" do
   describe "signin page" do
     before { visit signin_path }
 
-    it { shoud have_link('Sign up now!',  href: signup_path) }
-    it { shoud have_link('forgotten password?',  href: new_password_reset_path) }
+    it { should have_link('Sign up now!',  href: signup_path) }
+    it { should have_link('forgotten password?',  href: new_password_reset_path) }
 
     describe "with invalid information" do
       let(:user) { FactoryGirl.create(:user) }
@@ -76,7 +76,8 @@ describe "Authentication" do
 
           describe "when signing in again" do
             before do
-              delete signout_path
+              # delete signout_path
+              click_link "Sign out"
               visit signin_path
               # fill_in "Email",    with: user.email
               # fill_in "Password", with: user.password
@@ -153,6 +154,11 @@ describe "Authentication" do
 
       describe "visiting the signup page" do
         before { get signup_path }
+        specify { expect(response).to redirect_to(root_path) }
+      end
+
+      describe "visiting the signin page" do
+        before { get signin_path }
         specify { expect(response).to redirect_to(root_path) }
       end
 

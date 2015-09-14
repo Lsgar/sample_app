@@ -1,5 +1,8 @@
 class SessionsController < ApplicationController
   def new
+    if signed_in?
+      redirect_to root_url, notice: "既にサインインしています。別のユーザでサインインする場合は、一度サインアウトしてください。"
+    end
   end
 
   def create

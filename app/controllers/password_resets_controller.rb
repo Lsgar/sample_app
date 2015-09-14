@@ -7,9 +7,6 @@ class PasswordResetsController < ApplicationController
   end
 
   def create
-    # user = User.find_by_email(params[:email])
-    # user.send_password_reset if user
-    # redirect_to root_url, :notice => "Email sent with password reset instructions."
     @user = User.find_by(email: params[:password_reset][:email].downcase)
     if @user
       @user.create_reset_digest
@@ -49,14 +46,15 @@ private
     # Before filters
 
     def get_user
-      # @user = User.find_by(email: params[:email])
-      @user = User.find_by_password_reset_token!(params[:id])
+      @user = User.find_by(password_reset_token: params[:id])
+      unless @user
+        flash[:danger] = "Password reset has expired."
+        redirect_to new_password_reset_url
+      end
     end
 
     # Confirms a valid user.
     def valid_user
-      # unless (@user && @user.activated? &&
-      #           @user.authenticated?(:reset, params[:id]))
       unless @user
         redirect_to root_url
       end

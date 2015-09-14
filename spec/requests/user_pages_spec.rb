@@ -41,6 +41,7 @@ describe "User pages" do
       describe "as an admin user" do
         let(:admin) { FactoryGirl.create(:admin) }
         before do
+          click_link "Sign out"
           sign_in admin
           visit users_path
         end
@@ -182,6 +183,28 @@ describe "User pages" do
     it { should have_title(full_title('Sign up')) }
     it { should_not have_xpath("//input[@id='user_name'][@value='#{user.name}']") }
     it { should_not have_xpath("//input[@id='user_email'][@value='#{user.email}']") }
+  end
+
+  describe "visit signup page after signin" do
+    let(:user) { FactoryGirl.create(:user) }
+    before do
+      sign_in user
+      visit signup_path
+    end
+
+    it { should have_content('新規登録する場合は、サインアウトしてください。') }
+    it { should have_selector('div.alert.alert-notice', text: '新規登録する場合は、サインアウトしてください。') }
+  end
+
+  describe "visit signin page after signin" do
+    let(:user) { FactoryGirl.create(:user) }
+    before do
+      sign_in user
+      visit signin_path
+    end
+
+    it { should have_content('既にサインインしています。') }
+    it { should have_selector('div.alert.alert-notice', text: '既にサインインしています。') }
   end
 
   describe "signup" do
