@@ -27,3 +27,5 @@ module SampleApp
     config.assets.precompile += %w(*.png *.jpg *.jpeg *.gif)
   end
 end
+
+ENV.update YAML.load_file('config/settings.yml')[Rails.env] rescue {}

@@ -71,6 +71,18 @@ class User < ActiveRecord::Base
   # Sends password reset email.
   def send_password_reset_email
     # UserMailer.password_reset(self).deliver_now
+    logger.debug('0')
+    logger.debug(ENV['SMTP_ADDRESS'])
+    logger.debug('1')
+    logger.debug(ENV['SMTP_PORT'])
+    logger.debug('2')
+    logger.debug(ENV['SMTP_DOMAIN'])
+    logger.debug('3')
+    logger.debug(ENV['SMTP_USERNAME'])
+    logger.debug('4')
+    logger.debug(ENV['SMTP_PASSWORD'])
+    logger.debug('5')
+    logger.debug(ENV['SMTP_MAIL_PORT'])
     UserMailer.password_reset(self).deliver
   end
 
