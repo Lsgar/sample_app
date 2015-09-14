@@ -23,4 +23,4 @@ doc/
 .DS_Store
 .idea
 .secret
-# /config/settings.yml
+/config/settings.yml
